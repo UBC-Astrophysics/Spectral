@@ -2,7 +2,6 @@ import numpy as np
 from cheb import cheb
 from scipy.linalg import eig
 from scipy.interpolate import interp2d
-from numpy.linalg import norm
 import matplotlib.pyplot as plt
 import math
 
@@ -28,19 +27,17 @@ isort=np.argsort(D)
 V=V[:,isort]
 D=D[isort]
 
-# Reshape them to 2D grid, interpolate to finer grid, and plot:
-xx,yy = np.meshgrid(x,y);
+# interpolate to finer grid, and plot:
 fine = np.linspace(-1,1,101)
-xxx,yyy = np.meshgrid(fine,fine);
-xxx=np.ravel(xxx)
-yyy=np.ravel(yyy)
 
+# apply bc of zero along edges
 uu = np.zeros((N+1,N+1))
-ay,ax = np.meshgrid([.56,.04],[.1,.5])
 for i in range(0,4):
+  # set interior values
   uu[1:-1,1:-1] = np.reshape(V[:,i],(N-1,N-1))
-  uu = uu/norm(uu[:],np.inf)
-  funk = interp2d(xx,yy,uu,kind='cubic');
+
+  uu = uu/np.max(np.abs(uu))
+  funk = interp2d(x,y,uu,kind='cubic');
   uuu=np.reshape(funk(fine,fine),(len(fine),len(fine)))
   
   plt.contour(fine,fine,uuu)
