@@ -24,4 +24,4 @@ function [V,Lam,w,rs,igood,zoom] = molecule_s(M,N,mphi,rdata,mudata,potdata)
   H = H + diag(interp2d(rdata,mudata,potdata,rr,ww))
   [V,Lam] = eig(H); Lam = diag(Lam); [Lam,ii] = sort(Lam); V = V(:,ii);
 % check outer B.C. and for bound states
-  igood = find((V(1,:).*V(1,:))’<(M*N)^(-2)*1e-4 & Lam<0);
+  igood = find((V(1,:).*V(1,:))'<(M*N)^(-2)*1e-4 & Lam<0);
