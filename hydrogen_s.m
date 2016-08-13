@@ -21,4 +21,4 @@ function [V,Lam,w,rs,igood,zoom] = hydrogen_s(beta,M,N,mphi)
   end
   [V,Lam] = eig(H); Lam = diag(Lam); [Lam,ii] = sort(Lam); Lam = Lam+2*beta*(mphi-1); V = V(:,ii);
 % check outer B.C. and for bound states
-  igood = find((V(1,:).*V(1,:))’<(M*N)^(-2)*1e-4 & Lam<0);
+  igood = find((V(1,:).*V(1,:))'<(M*N)^(-2)*1e-4 & Lam<0);
