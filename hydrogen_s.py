@@ -7,7 +7,6 @@ from cheb import cheb
 import numpy as np
 from scipy.linalg import eig
 
-
 def hydrogen_s(beta,M,N,mphi):
 # w coordinate, ranging from -1 to 1
     Dw,w = cheb(M)
@@ -42,8 +41,7 @@ def hydrogen_s(beta,M,N,mphi):
         H = np.kron(Hr,np.eye(M+1))+np.kron(R2,Hw)+np.diag(beta*beta*rperp2)
     else:
         H = np.kron(Hr,np.eye(M-1))+np.kron(R2,Hw)+np.diag(beta*beta*rperp2)+np.diag(mphi*mphi/rperp2)
-    V,Lam = eig(H)
-    Lam = np.diag(Lam)
+    Lam,V = eig(H)
     ii=np.argsort(Lam)
     Lam = Lam[ii]
     Lam = Lam+2*beta*(mphi-1)
