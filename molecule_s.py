@@ -6,8 +6,9 @@
 from cheb import cheb
 import numpy as np
 from scipy.linalg import eig
+from scipy.interpolate import interp2d
 
-def molecule_s(beta,M,N,mphi):
+def molecule_s(M,N,mphi,rdata,mudata,potdata):
 # w coordinate, ranging from -1 to 1
     Dw,w = cheb(M)
     D2w = np.dot(Dw,Dw)
@@ -28,28 +29,28 @@ def molecule_s(beta,M,N,mphi):
     D = D[1:-1,1:-1]
     rp = rp[1:-1]
 # zoom factor: set by coulomb and larmor radius; , rs from inf to 0
-    zoom=1/(1.0/110.0+beta**0.5/41)
+    zoom=1
     rs=zoom*np.arctanh(rp)
     R = np.diag(1/rs)
     R2 = np.diag(1/(rs*rs))
-    Hr=-1/(zoom*zoom)*D2-2*R
+    Hr=-1/(zoom*zoom)
     rr,ww = np.meshgrid(rs,w)
     rr = np.ravel(rr)
     ww = np.ravel(ww)
     rperp2=rr*rr*(1-ww*ww)
     if (mphi==0):
-        H = np.kron(Hr,np.eye(M+1))+np.kron(R2,Hw)+np.diag(beta*beta*rperp2)
+        H = np.kron(Hr,np.eye(M+1))+np.kron(R2,Hw)
     else:
-        H = np.kron(Hr,np.eye(M-1))+np.kron(R2,Hw)+np.diag(beta*beta*rperp2)+np.diag(mphi*mphi/rperp2)
+        H = np.kron(Hr,np.eye(M-1))+np.kron(R2,Hw)+np.diag(mphi*mphi/rperp2)
+    potfunk=np.vectorize(interp2d(rdata,mudata,potdata))
+    H=H+np.diag(potfunk(rr,ww))
     Lam,V = eig(H)
     ii=np.argsort(Lam)
     Lam = Lam[ii]
-    Lam = Lam+2*beta*(mphi-1)
+    Lam = Lam
     V = V[ii]
 #     check outer B.C. and for bound states
     igood=0
 #  igood = find((V(1,:).*V(1,:))'<(M*N)^(-2)*1e-4 & Lam<0);
 # 
     return V,Lam,w,rs,igood,zoom
-Contact GitHub API Training Shop Blog About
-© 2016 GitHub, Inc. Terms Privacy Security Status Help
