@@ -14,7 +14,7 @@ Lamres=np.reshape(Lamres,np.shape(bb))
 
 linelist=[]
 for i,b in enumerate(betalist):
-    for j,m in enumerate(mlist)
+    for j,m in enumerate(mlist):
         Lam1=Lamres[j,i]
         Lam1=Lam1[Lam1<0]
         Lam1=Lam1[:,np.newaxis]
@@ -29,6 +29,6 @@ linelist=np.reshape(linelist,np.shape(bb))
 
 with open('linelist.dat','w') as f:
   for i,b in enumerate(betalist):
-    for j,m in enumerate(mlist)
+    for j,m in enumerate(mlist):
       f.write(b,m,linelist[i,j],'\n')
       
