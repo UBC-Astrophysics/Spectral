@@ -11,7 +11,7 @@ Lamres=[]
 for b,m in zip(bbf,mmf):
     V,Lam,w,rs,igood,zoom = hydrogen_s(b,11,31,m)
     Lam=np.real(Lam)
-    Lam=-np.exp(np.unique(np.round(np.log(-Lam[Lam<-1.0/36.0]),decimals=3)))
+    Lam=-np.exp(np.unique(np.round(np.log(-Lam[Lam<-1.0/36.0]),decimals=4)))
     Lamres.append(Lam)    
 
 Lamres=np.reshape(Lamres,np.shape(bb))
