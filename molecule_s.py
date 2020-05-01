@@ -34,7 +34,7 @@ def molecule_s(M,N,mphi,rdata,mudata,potdata):
     R = np.diag(1/rs)
     R2 = np.diag(1/(rs*rs))
     Hr=-1/(zoom*zoom)
-    rr,ww = np.meshgrid(rs,w)
+    ww,rr = np.meshgrid(w,rs)
     rr = np.ravel(rr)
     ww = np.ravel(ww)
     rperp2=rr*rr*(1-ww*ww)
