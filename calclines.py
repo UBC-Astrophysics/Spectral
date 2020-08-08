@@ -2,7 +2,7 @@ from hydrogen_s import hydrogen_s
 import numpy as np
 import matplotlib.pyplot as plt
 
-betalist=np.linspace(0,0.1,201)
+betalist=np.linspace(0,0.2,201)
 mmax=7
 mlist=np.linspace(-mmax,mmax,2*mmax+1)
 mm,bb = np.meshgrid(mlist,betalist)
@@ -14,7 +14,7 @@ for b,m in zip(bbf,mmf):
     Lam=np.sort(np.real(Lam))
     Lam=Lam[0:(mmax-(abs(m))+2)*(mmax-abs(m)+1)/2]
     if (len(Lam)>0):
-        print(('%g %d %d'+' %g'*len(Lam)) % ((b,m,99)+tuple(Lam)))
+        print(('# %g %d %d'+' %g'*len(Lam)) % ((b,m,99)+tuple(Lam)))
     Lamres.append(Lam)    
 
 Lamres=np.reshape(Lamres,np.shape(bb))
@@ -29,5 +29,5 @@ for i,b in enumerate(betalist):
                 res=(Lam1-Lam2).flatten()
                 resbeta=np.concatenate((resbeta,res))
                 if (len(res)>0):
-                    print(('%g %d %d'+' %g'*len(res)) % ((b,m,mlist[j2])+tuple(res)))
+                    print(('# %g %d %d'+' %g'*len(res)) % ((b,m,mlist[j2])+tuple(res)))
     print(('%g %d %d'+' %g'*len(resbeta)) % ((b,-99,-99)+tuple(resbeta)))

@@ -9,8 +9,6 @@ mm,bb = np.meshgrid(mlist,betalist)
 bbf=bb.flatten()
 mmf=mm.flatten()
 Lamres=[]
-goodlower=[]
-goodupper=[]
 for b,m in zip(bbf,mmf):
     V,Lam,w,rs,igood,zoom = hydrogen_s(b,11,31,m)
     Lam=np.sort(np.real(Lam))
@@ -18,20 +16,17 @@ for b,m in zip(bbf,mmf):
     if (len(Lam)>0):
         print(('# %g %d %d'+' %g'*len(Lam)) % ((b,m,99)+tuple(Lam)))
     Lamres.append(np.sort(Lam))
-    if (b==0) :
-        goodlower.append(np.argwhere((np.abs(Lam+0.25)<0.01)))
-        goodupper.append(np.argwhere((np.abs(Lam+0.1111111111)<0.01)  | (np.abs(Lam+0.0625)<0.01)))
 
 Lamres=np.reshape(Lamres,np.shape(bb))
 for i,b in enumerate(betalist):
     resbeta=[]
     for j,m in enumerate(mlist):
         if (m==0) or (m==-1) or (m==1):
-            Lam1=Lamres[i,j][goodlower[j]]
+            Lam1=Lamres[i,j]
             Lam1=Lam1[:,np.newaxis]
             for j2 in [j-1,j,j+1]:
                 if (j2<len(mlist)) and (j2>=0):
-                    Lam2=Lamres[i,j2][goodupper[j]]
+                    Lam2=Lamres[i,j2]
                     res=(Lam1-Lam2).flatten()
                     resbeta=np.concatenate((resbeta,res))
                     if (len(res)>0):
